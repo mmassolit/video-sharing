@@ -6,7 +6,6 @@ import platform_service.Advertiser;
 
 public final class AdsManagingService {
 	private final LinkedList<Ad> fullAdsList = new LinkedList<Ad>();
-	private final LinkedList<Advertiser> fullAdvertiserList = new LinkedList<Advertiser>();
 			
 	public static void validateAd(Advertiser advertiser, Ad ad) {
 		if (advertiser.getBalance() < ad.getBudget())
@@ -14,7 +13,9 @@ public final class AdsManagingService {
 					+ " than ad's budget).");
 	}
 	
-	public void createAd(Advertiser advertiser, Ad ad) {
+	public void createAd(Advertiser advertiser, String adName, double cpm, double budget) {
+		Ad ad = new Ad(adName, cpm, budget, advertiser.show());
+		
 		validateAd(advertiser, ad);
 		LinkedList<Ad> adsList = advertiser.getAdsList();
 		adsList.addLast(ad);
@@ -23,16 +24,15 @@ public final class AdsManagingService {
 		advertiser.decreaseBalance(ad.getBudget());
 		
 		fullAdsList.addLast(ad);
-		fullAdvertiserList.addLast(advertiser);
 	}
 	
 	public void deleteAd(Advertiser advertiser, Ad ad) {
 		LinkedList<Ad> adsList = advertiser.getAdsList();
 		if (adsList.contains(ad))
 			adsList.remove(ad);
+		
 			advertiser.setAdsList(adsList);
-			
-	    if 
+			fullAdsList.remove(ad);
 	}
 	
 	public Ad pickAd() {
@@ -48,8 +48,10 @@ public final class AdsManagingService {
 			}
 		}
 		
-		return fullAdsList.get(iMax);
+		Ad pickedAd = fullAdsList.get(iMax);
+		return pickedAd;
 	}
+	
 	
 	public void decreaseBudget(Advertiser advertiser, Ad ad) {
 		double budget = ad.getBudget();

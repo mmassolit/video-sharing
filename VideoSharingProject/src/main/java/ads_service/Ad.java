@@ -7,8 +7,9 @@ public final class Ad {
 	private double cpm;
 	private double budget;
 	private final String uid;
+	private final String ownerId;
 	
-	public Ad(String name, double cpm, double budget) {
+	public Ad(String name, double cpm, double budget, String ownerId) {
 		validateCpm(cpm);
 		validateBudget(budget, cpm);
 		
@@ -16,6 +17,7 @@ public final class Ad {
 		this.cpm = cpm;
 		this.budget = budget;
 		this.uid = UUID.randomUUID().toString();
+		this.ownerId = ownerId;
 	}
 	
 	 private static void validateCpm(double cpm){
@@ -35,8 +37,16 @@ public final class Ad {
 		return this.cpm;
 	}
 	
+	public String getOwnerId() {
+		return ownerId;
+	}
+	
 	public String show() {
 		return this.uid;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void setCpm(double newCpm) {

@@ -7,8 +7,9 @@ import platform_service.User;
 public final class VideoManagingService {
 	private final LinkedList<Video> fullVideoList = new LinkedList<Video>();
 	
-	public void addVideo(User user, Video video) {
+	public void addVideo(User user, String videoName) {
 		LinkedList<Video> videoList = user.getVideoList();
+		Video video = new Video(videoName, user.show());
 		
 		if (!videoList.contains(video)) {
 			fullVideoList.addLast(video);
@@ -29,5 +30,9 @@ public final class VideoManagingService {
 	
 	public LinkedList<Video> getFullVideoList() {
 		return fullVideoList;
+	}
+	
+	public void playVideo(Video video) {
+		video.addViews(1);
 	}
 }

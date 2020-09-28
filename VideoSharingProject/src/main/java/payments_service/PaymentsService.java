@@ -14,8 +14,8 @@ public final class PaymentsService {
             throw new IllegalArgumentException("Invalid value.");
 	}
 	
-	private static void validateWithdraw(Account account, double amount) {
-		if (account.getBalance() < amount)
+	private static void validateWithdraw(double balance, double amount) {
+		if (balance < amount)
 			throw new IllegalArgumentException("Invalid value "
 					+ "(withdrawal amount has to be smaller than balance.");
 	}
@@ -33,12 +33,21 @@ public final class PaymentsService {
 		platform.increaseBalance(platformAmount);
 	}
 	
-	public void rechargeBalance(Account account, double amount) {
-		account.increaseBalance(amount);
+	public void rechargeAdvertiserBalance(Advertiser advertiser, double amount) {
+		advertiser.increaseBalance(amount);
 	}
 	
-	public void withdrawBalance(Account account, double amount) {
-		validateWithdraw(account, amount);
-		account.decreaseBalance(amount);
+	public void rechargeUserBalance(User user, double amount) {
+		user.increaseBalance(amount);
+	}
+	
+	public void withdrawUserBalance(User user, double amount) {
+		validateWithdraw(user.getBalance(), amount);
+		user.decreaseBalance(amount);
+	}
+	
+	public void withdrawAdvertiserBalance(Advertiser advertiser, double amount) {
+		validateWithdraw(advertiser.getBalance(), amount);
+		advertiser.decreaseBalance(amount);
 	}
 }
